@@ -34,7 +34,6 @@ class Board:
                     self.pieces.append(piece(self.plateau, x, y, color))
 
     def deplacer(self, x, y):
-        print(x, y)
         if (x, y) in self.piece_touchee.coups_possibles():
             self.piece_touchee.deplacer(x, y)
             self.update_pieces()
@@ -48,7 +47,6 @@ class Board:
             self.piece_est_touchee = True
         else:
             self.deselect()
-        print(self.piece_touchee.coups_possibles())
 
     def deselect(self):
         self.piece_touchee = None

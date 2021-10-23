@@ -16,6 +16,8 @@ class Game:
             coup_legal = self.board.deplacer(x, y)
             if coup_legal:
                 self.tour_suivant()
+            else:
+                self.board.deselect()
         else:
             if self.board.get_color(x, y) == self.trait:
                 self.board.select(x, y)
