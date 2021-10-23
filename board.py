@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 import pygame as pg
-from constants import TAILLE_CASE, BLACK, WHITE, CODE_PIECES
+
+from constants import BLACK, CODE_PIECES, TAILLE_CASE, WHITE
 from pictures import PIECES
+from pieces import Roi
 
 
 class Board:
@@ -34,11 +36,35 @@ class Board:
                     self.pieces.append(piece(self.plateau, x, y, color))
 
     def deplacer(self, x, y):
+        old_plateau = [[case for case in ligne] for ligne in self.plateau]
         if (x, y) in self.piece_touchee.coups_possibles():
             self.piece_touchee.deplacer(x, y)
             self.update_pieces()
+
+            # si le roi est en échec
+            for piece in self.pieces:
+                if isinstance(piece, Roi) and piece.color == self.piece_touchee.color:
+                    if self.piece_attaquee(piece):
+                        self.plateau = old_plateau
+                        self.update_pieces()
+                        return False
+
             self.deselect()
             return True
+        return False
+
+    def piece_attaquee(self, piece):
+        if piece.color == 1:
+            adverse = 2
+        else:
+            adverse = 1
+
+        for attaquant in self.pieces:
+            if (
+                attaquant.color == adverse
+                and (piece.x, piece.y) in attaquant.coups_possibles()
+            ):
+                return True
         return False
 
     def select(self, x, y):

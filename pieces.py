@@ -88,7 +88,7 @@ class Fou(Piece):
             longueur = 1
             x, y = self.diagonale(direction, longueur)
 
-            while est_vide(x, y):
+            while self.est_vide(x, y):
                 res.append((x, y))
                 longueur += 1
                 x, y = self.diagonale(direction, longueur)
@@ -148,10 +148,10 @@ class Roi(Piece):
         res = []
         for direction in range(4):
             x, y = self.horizontale(direction, l=1)
-            if est_vide(x, y) or est_adverse(x, y):
+            if self.est_vide(x, y) or self.est_adverse(x, y):
                 res.append((x, y))
             x, y = self.diagonale(direction, l=1)
-            if est_vide(x, y) or est_adverse(x, y):
+            if self.est_vide(x, y) or self.est_adverse(x, y):
                 res.append((x, y))
 
         return res
