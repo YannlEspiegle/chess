@@ -2,14 +2,14 @@
 
 import pygame as pg
 from constants import TAILLE_CASE, BLACK, WHITE
+from pictures import PIECES
 
 
 class Board:
     def __init__(self):
         self.plateau = [
             [14, 15, 16, 12, 13, 16, 15, 14],
-            [10, 10, 10, 10, 10, 10, 10, 10],
-            [0, 0, 0, 0, 0, 0, 0, 0],
+            [11, 11, 11, 11, 11, 11, 11, 11],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
@@ -29,3 +29,8 @@ class Board:
 
                 case = (x * taille, y * taille, taille, taille)
                 pg.draw.rect(win, color, case)
+
+                if self.plateau[y][x]:
+                    piece_image = PIECES[self.plateau[y][x]]
+                    piece_image = pg.transform.scale(piece_image, (taille, taille))
+                    win.blit(piece_image, (x * taille, y * taille))
