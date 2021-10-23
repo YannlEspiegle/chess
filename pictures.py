@@ -16,3 +16,6 @@ PIECES = {
     15: pg.image.load("assets/cavalier_noir.png"),
     16: pg.image.load("assets/fou_noir.png"),
 }
+
+COUP_POSSIBLE = pg.image.load("assets/mouvement_possible.png")
+PRISE_POSSIBLE = pg.image.load("assets/prise_possible.png")

@@ -4,6 +4,8 @@ import pygame as pg
 from constants import WIDTH, HEIGHT
 from game import Game
 
+pg.init()
+
 win = pg.display.set_mode((WIDTH, HEIGHT))
 clock = pg.time.Clock()
 pg.display.set_caption("Jeu d'échecs")

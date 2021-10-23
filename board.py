@@ -2,8 +2,8 @@
 
 import pygame as pg
 
-from constants import BLACK, CODE_PIECES, TAILLE_CASE, WHITE
-from pictures import PIECES
+from constants import BLACK, CODE_PIECES, TAILLE_CASE, WHITE, YELLOW
+from pictures import PIECES, COUP_POSSIBLE, PRISE_POSSIBLE
 from pieces import Roi
 
 
@@ -44,7 +44,7 @@ class Board:
             # si le roi est en échec
             for piece in self.pieces:
                 if isinstance(piece, Roi) and piece.color == self.piece_touchee.color:
-                    if self.piece_attaquee(piece):
+                    if self.case_attaquee(piece.x, piece.y, piece.get_adverse()):
                         self.plateau = old_plateau
                         self.update_pieces()
                         return False
@@ -53,17 +53,9 @@ class Board:
             return True
         return False
 
-    def piece_attaquee(self, piece):
-        if piece.color == 1:
-            adverse = 2
-        else:
-            adverse = 1
-
+    def case_attaquee(self, x, y, color):
         for attaquant in self.pieces:
-            if (
-                attaquant.color == adverse
-                and (piece.x, piece.y) in attaquant.coups_possibles()
-            ):
+            if attaquant.color == color and (x, y) in attaquant.coups_possibles():
                 return True
         return False
 
@@ -80,9 +72,16 @@ class Board:
 
     def draw(self, win):
         taille = TAILLE_CASE
+        if self.piece_est_touchee:
+            cp = self.piece_touchee.coups_possibles()
+        else:
+            cp = []
+
         for y in range(8):
             for x in range(8):
-                if (x + y) % 2 == 0:
+                if self.piece_touchee and (x, y) == (self.piece_touchee.x, self.piece_touchee.y):
+                    color = (201, 195, 44)
+                elif (x + y) % 2 == 0:
                     color = WHITE
                 else:
                     color = BLACK
@@ -90,10 +89,20 @@ class Board:
                 case = (x * taille, y * taille, taille, taille)
                 pg.draw.rect(win, color, case)
 
+                # desinner les pièces
                 if self.plateau[y][x]:
                     piece_image = PIECES[self.plateau[y][x]]
                     piece_image = pg.transform.scale(piece_image, (taille, taille))
                     win.blit(piece_image, (x * taille, y * taille))
+
+                # dessiner les coups/prises possibles
+                if (x, y) in cp:
+                    if self.plateau[y][x]:
+                        image = PRISE_POSSIBLE
+                    else:
+                        image = COUP_POSSIBLE
+                    image = pg.transform.scale(image, (taille, taille))
+                    win.blit(image, (x * taille, y * taille))
 
     def get_piece(self, x, y):
         for piece in self.pieces:

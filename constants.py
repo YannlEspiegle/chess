@@ -9,5 +9,6 @@ TAILLE_CASE = WIDTH // 8
 
 BLACK = (80, 80, 80)
 WHITE = (230, 230, 230)
+YELLOW = (201, 148, 44)
 
 CODE_PIECES = {1: Pion, 2: Roi, 3: Dame, 4: Tour, 5: Cavalier, 6: Fou}

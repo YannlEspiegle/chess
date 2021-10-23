@@ -26,6 +26,11 @@ class Piece:
     def est_vide(self, x, y):
         return 0 <= x < 8 and 0 <= y < 8 and self.plateau[y][x] == 0
 
+    def get_adverse(self):
+        if self.color == 1:
+            return 2
+        return 1
+
     def diagonale(self, direction, l):
         """Renvoie la case en diagonale de direction {0, 1, 2, 3} et de longueur l par rapport à la pièce"""
         directions = {
