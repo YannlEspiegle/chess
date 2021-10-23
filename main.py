@@ -23,6 +23,8 @@ def main():
             if event.type == pg.QUIT:
                 pg.quit()
                 return 0
+            if event.type == pg.MOUSEBUTTONDOWN:
+                g.on_click(pg.mouse.get_pos())
 
         clock.tick(60)
 
