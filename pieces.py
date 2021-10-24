@@ -170,7 +170,8 @@ class Dame(Piece):
         res = []
         for direction in range(4):
             for i in range(2):
-                if i == 1:  # on regarde les déplacements diagonaux puis horizontaux/verticaux
+                # on regarde les déplacements diagonaux puis horizontaux/verticaux
+                if i == 1:
                     deplacement = self.diagonale
                 else:
                     deplacement = self.horizontale

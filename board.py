@@ -2,8 +2,8 @@
 
 import pygame as pg
 
-from constants import BLACK, CODE_PIECES, TAILLE_CASE, WHITE, YELLOW
-from pictures import PIECES, COUP_POSSIBLE, PRISE_POSSIBLE
+from constants import BLACK, CODE_PIECES, SPECIAL, TAILLE_CASE, WHITE
+from pictures import COUP_POSSIBLE, PIECES, PRISE_POSSIBLE
 from pieces import Roi
 
 
@@ -80,7 +80,7 @@ class Board:
         for y in range(8):
             for x in range(8):
                 if self.piece_touchee and (x, y) == (self.piece_touchee.x, self.piece_touchee.y):
-                    color = (201, 195, 44)
+                    color = SPECIAL
                 elif (x + y) % 2 == 0:
                     color = WHITE
                 else:
