@@ -8,12 +8,16 @@ class Piece:
         self.color = color  # 1 -> blanc, 2 -> noir
         self.plateau = plateau
 
+    def clone(self):
+        return self.__class__([[case for case in ligne] for ligne in self.plateau], self.x, self.y, self.color)
+
     def deplacer(self, x, y):
         """Déplace la pièce sans se soucier du fait que le coup soit légal ou non"""
         self.plateau[y][x] = self.plateau[self.y][self.x]
         self.plateau[self.y][self.x] = 0
         self.x = x
         self.y = y
+        return self.plateau
 
     def est_adverse(self, x, y):
         """Indique si la case (x, y) est occupée par une pièce adverse"""

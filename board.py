@@ -35,10 +35,11 @@ class Board:
                     piece = CODE_PIECES[self.plateau[y][x] % 10]
                     self.pieces.append(piece(self.plateau, x, y, color))
 
-    def deplacer(self, x, y):
+    def deplacer(self, x, y, deplacer=True):
         old_plateau = [[case for case in ligne] for ligne in self.plateau]
+        old_piece_touchee = self.piece_touchee.clone()
         if (x, y) in self.piece_touchee.coups_possibles():
-            self.piece_touchee.deplacer(x, y)
+            self.plateau = self.piece_touchee.deplacer(x, y)
             self.update_pieces()
 
             # si le roi est en échec
@@ -46,10 +47,16 @@ class Board:
                 if isinstance(piece, Roi) and piece.color == self.piece_touchee.color:
                     if self.case_attaquee(piece.x, piece.y, piece.get_adverse()):
                         self.plateau = old_plateau
+                        self.piece_touchee = old_piece_touchee
                         self.update_pieces()
                         return False
 
-            self.deselect()
+            if not deplacer:
+                self.plateau = old_plateau
+                self.piece_touchee = old_piece_touchee
+                self.update_pieces()
+            else:
+                self.deselect()
             return True
         return False
 
@@ -73,7 +80,7 @@ class Board:
     def draw(self, win):
         taille = TAILLE_CASE
         if self.piece_est_touchee:
-            cp = self.piece_touchee.coups_possibles()
+            cp = [(x,y) for x,y in self.piece_touchee.coups_possibles() if self.deplacer(x, y, False)]
         else:
             cp = []
 
