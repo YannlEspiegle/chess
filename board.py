@@ -4,7 +4,7 @@ import pygame as pg
 
 from constants import BLACK, CODE_PIECES, SPECIAL, TAILLE_CASE, WHITE
 from pictures import COUP_POSSIBLE, PIECES, PRISE_POSSIBLE
-from pieces import Roi
+from pieces import Roi, Tour
 
 
 class Board:
@@ -39,6 +39,13 @@ class Board:
         old_plateau = [[case for case in ligne] for ligne in self.plateau]
         old_piece_touchee = self.piece_touchee.clone()
         if (x, y) in self.piece_touchee.coups_possibles():
+
+            # on vérifie si on peut roquer
+            if isinstance(self.piece_touchee, Roi) and abs(x - self.piece_touchee.x) == 2:
+                if x > self.piece_touchee.x:
+                    return self.check_roque(self.piece_touchee, 0, deplacer)
+                return self.check_roque(self.piece_touchee, 1, deplacer)
+
             self.plateau = self.piece_touchee.deplacer(x, y)
             self.update_pieces()
 
@@ -64,6 +71,29 @@ class Board:
         for attaquant in self.pieces:
             if attaquant.color == color and (x, y) in attaquant.coups_possibles():
                 return True
+        return False
+
+    def check_roque(self, roi: Roi, direction, deplacer):
+        # on vérifie que le cases du roi ne sont pas attaquées
+        for i in range(0, 3):
+            x, y = roi.horizontale(direction, i)
+            if self.case_attaquee(x, y, roi.get_adverse()):
+                return False
+
+        # on vérifie qu'il y a bien une tour au bout de la rangée
+        if direction == 0:
+            x_tour = 7
+        elif direction == 1:
+            x_tour = 0
+        tour = self.get_piece(x_tour, roi.y)
+
+        if isinstance(tour, Tour) and tour.color == roi.color:
+            if deplacer:
+                self.plateau = tour.deplacer(*roi.horizontale(direction, 1))
+                roi.plateau = self.plateau # on actualise le plateau du roi (pour que la ligne suivante marche)
+                self.plateau = roi.deplacer(*roi.horizontale(direction, 2))
+                self.deselect()
+            return True
         return False
 
     def select(self, x, y):
