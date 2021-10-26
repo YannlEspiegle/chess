@@ -46,20 +46,24 @@ class Board:
                     return self.check_roque(self.piece_touchee, 0, deplacer)
                 return self.check_roque(self.piece_touchee, 1, deplacer)
 
-            self.plateau = self.piece_touchee.deplacer(x, y)
+            self.piece_touchee.deplacer(x, y)
             self.update_pieces()
 
             # si le roi est en échec
             for piece in self.pieces:
                 if isinstance(piece, Roi) and piece.color == self.piece_touchee.color:
                     if self.case_attaquee(piece.x, piece.y, piece.get_adverse()):
-                        self.plateau = old_plateau
+                        for y in range(8):
+                            for x in range(8):
+                                self.plateau[y][x] = old_plateau[y][x]
                         self.piece_touchee = old_piece_touchee
                         self.update_pieces()
                         return False
 
             if not deplacer:
-                self.plateau = old_plateau
+                for y in range(8):
+                    for x in range(8):
+                        self.plateau[y][x] = old_plateau[y][x]
                 self.piece_touchee = old_piece_touchee
                 self.update_pieces()
             else:
@@ -89,9 +93,8 @@ class Board:
 
         if isinstance(tour, Tour) and tour.color == roi.color:
             if deplacer:
-                self.plateau = tour.deplacer(*roi.horizontale(direction, 1))
-                roi.plateau = self.plateau # on actualise le plateau du roi (pour que la ligne suivante marche)
-                self.plateau = roi.deplacer(*roi.horizontale(direction, 2))
+                tour.deplacer(*roi.horizontale(direction, 1))
+                roi.deplacer(*roi.horizontale(direction, 2))
                 self.deselect()
             return True
         return False

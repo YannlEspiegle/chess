@@ -9,7 +9,7 @@ class Piece:
         self.plateau = plateau
 
     def clone(self):
-        return self.__class__([[case for case in ligne] for ligne in self.plateau], self.x, self.y, self.color)
+        return self.__class__(self.plateau, self.x, self.y, self.color)
 
     def deplacer(self, x, y):
         """Déplace la pièce sans se soucier du fait que le coup soit légal ou non"""
