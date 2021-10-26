@@ -24,8 +24,8 @@ class Game:
         x, y = pos[0] // TAILLE_CASE, pos[1] // TAILLE_CASE
 
         if self.board.piece_est_touchee:
-            coup_legal = self.board.deplacer(x, y)
-            if coup_legal:
+            if self.board.coup_legal(self.board.piece_touchee, x, y):
+                self.board.deplacer_si_possible(x, y)
                 self.tour_suivant()
             else:
                 self.board.deselect()

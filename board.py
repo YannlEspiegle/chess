@@ -35,23 +35,35 @@ class Board:
                     piece = CODE_PIECES[self.plateau[y][x] % 10]
                     self.pieces.append(piece(self.plateau, x, y, color))
 
-    def deplacer(self, x, y, deplacer=True):
-        old_plateau = [[case for case in ligne] for ligne in self.plateau]
-        old_piece_touchee = self.piece_touchee.clone()
-        if (x, y) in self.piece_touchee.coups_possibles():
+    def deplacer_si_possible(self, x, y):
+        if self.coup_legal(self.piece_touchee, x, y):
 
-            # on vérifie si on peut roquer
             if isinstance(self.piece_touchee, Roi) and abs(x - self.piece_touchee.x) == 2:
                 if x > self.piece_touchee.x:
-                    return self.check_roque(self.piece_touchee, 0, deplacer)
-                return self.check_roque(self.piece_touchee, 1, deplacer)
+                    self.check_roque(self.piece_touchee, 0, deplacer=True)
+                self.check_roque(self.piece_touchee, 1, deplacer=True)
 
             self.piece_touchee.deplacer(x, y)
+            self.deselect()
+
+    def coup_legal(self, piece, x, y):
+        if (x, y) in piece.coups_possibles():
+            old_plateau = [[case for case in ligne] for ligne in self.plateau]
+            old_piece_touchee = self.piece_touchee.clone()
+
+            # on vérifie si on peut roquer
+            if isinstance(piece, Roi) and abs(x - piece.x) == 2:
+                if x > piece.x:
+                    return self.check_roque(piece, 0, deplacer=False)
+                return self.check_roque(piece, 1, deplacer=False)
+
+            # ensuite, on anticipe le coup, on vérifie si le roi est en échec puis en replace la pièce et le plateau
+            piece.deplacer(x, y)
             self.update_pieces()
 
             # si le roi est en échec
             for piece in self.pieces:
-                if isinstance(piece, Roi) and piece.color == self.piece_touchee.color:
+                if isinstance(piece, Roi) and piece.color == piece.color:
                     if self.case_attaquee(piece.x, piece.y, piece.get_adverse()):
                         for y in range(8):
                             for x in range(8):
@@ -60,14 +72,12 @@ class Board:
                         self.update_pieces()
                         return False
 
-            if not deplacer:
-                for y in range(8):
-                    for x in range(8):
-                        self.plateau[y][x] = old_plateau[y][x]
-                self.piece_touchee = old_piece_touchee
-                self.update_pieces()
-            else:
-                self.deselect()
+            for y in range(8):
+                for x in range(8):
+                    self.plateau[y][x] = old_plateau[y][x]
+            self.piece_touchee = old_piece_touchee
+            self.update_pieces()
+
             return True
         return False
 
@@ -94,8 +104,6 @@ class Board:
         if isinstance(tour, Tour) and tour.color == roi.color:
             if deplacer:
                 tour.deplacer(*roi.horizontale(direction, 1))
-                roi.deplacer(*roi.horizontale(direction, 2))
-                self.deselect()
             return True
         return False
 
@@ -113,7 +121,7 @@ class Board:
     def draw(self, win):
         taille = TAILLE_CASE
         if self.piece_est_touchee:
-            cp = [(x,y) for x,y in self.piece_touchee.coups_possibles() if self.deplacer(x, y, False)]
+            cp = [(x,y) for x,y in self.piece_touchee.coups_possibles() if self.coup_legal(self.piece_touchee, x, y)]
         else:
             cp = []
 
