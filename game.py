@@ -21,17 +21,31 @@ class Game:
         self.winner = 0
 
     def on_click(self, pos):
-        x, y = pos[0] // TAILLE_CASE, pos[1] // TAILLE_CASE
+        if not self.partie_finie:
+            x, y = pos[0] // TAILLE_CASE, pos[1] // TAILLE_CASE
 
-        if self.board.piece_est_touchee:
-            if self.board.coup_legal(self.board.piece_touchee, x, y):
-                self.board.deplacer_si_possible(x, y)
-                self.tour_suivant()
+            if self.board.piece_est_touchee:
+                if self.board.coup_legal(self.board.piece_touchee, x, y):
+                    self.board.deplacer_si_possible(x, y)
+                    self.tour_suivant()
+                    self.check_partie_finie()
+                else:
+                    self.board.deselect()
             else:
-                self.board.deselect()
-        else:
-            if self.board.get_color(x, y) == self.trait:
-                self.board.select(x, y)
+                if self.board.get_color(x, y) == self.trait:
+                    self.board.select(x, y)
+
+    def check_partie_finie(self):
+        roi = self.board.get_king(self.trait)
+        # mat
+        if not self.board.peut_jouer(self.trait):
+            if self.board.case_attaquee(roi.x, roi.y, roi.get_adverse()):
+                # échec et mat
+                self.winner = roi.get_adverse()
+            else:
+                # pat
+                self.winner = 0
+            self.partie_finie = True
 
     def tour_suivant(self):
         if self.trait == 1:

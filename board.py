@@ -44,12 +44,17 @@ class Board:
                 self.check_roque(self.piece_touchee, 1, deplacer=True)
 
             self.piece_touchee.deplacer(x, y)
+            self.update_pieces()
             self.deselect()
 
     def coup_legal(self, piece, x, y):
         if (x, y) in piece.coups_possibles():
+            est_legal = True
             old_plateau = [[case for case in ligne] for ligne in self.plateau]
-            old_piece_touchee = self.piece_touchee.clone()
+            if self.piece_touchee != None:
+                old_piece_touchee = self.piece_touchee.clone()
+            else:
+                old_piece_touchee = None
 
             # on vérifie si on peut roquer
             if isinstance(piece, Roi) and abs(x - piece.x) == 2:
@@ -62,15 +67,9 @@ class Board:
             self.update_pieces()
 
             # si le roi est en échec
-            for piece in self.pieces:
-                if isinstance(piece, Roi) and piece.color == piece.color:
-                    if self.case_attaquee(piece.x, piece.y, piece.get_adverse()):
-                        for y in range(8):
-                            for x in range(8):
-                                self.plateau[y][x] = old_plateau[y][x]
-                        self.piece_touchee = old_piece_touchee
-                        self.update_pieces()
-                        return False
+            roi = self.get_king(piece.color)
+            if self.case_attaquee(roi.x, roi.y, roi.get_adverse()):
+                est_legal = False
 
             for y in range(8):
                 for x in range(8):
@@ -78,7 +77,7 @@ class Board:
             self.piece_touchee = old_piece_touchee
             self.update_pieces()
 
-            return True
+            return est_legal
         return False
 
     def case_attaquee(self, x, y, color):
@@ -157,6 +156,21 @@ class Board:
             if piece.x == x and piece.y == y:
                 return piece
         return None
+
+    def peut_jouer(self, color):
+        for piece in self.pieces:
+            if piece.color == color:
+                self.select(piece.x, piece.y)
+                if [(x, y) for x, y in self.piece_touchee.coups_possibles() if self.coup_legal(self.piece_touchee, x, y)]:
+                    self.deselect()
+                    return True
+        self.deselect()
+        return False
+
+    def get_king(self, color):
+        for piece in self.pieces:
+            if isinstance(piece, Roi) and piece.color == color:
+                return piece
 
     def get_color(self, x, y):
         if self.plateau[y][x] > 10:

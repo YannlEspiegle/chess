@@ -17,7 +17,6 @@ class Piece:
         self.plateau[self.y][self.x] = 0
         self.x = x
         self.y = y
-        return self.plateau
 
     def est_adverse(self, x, y):
         """Indique si la case (x, y) est occupée par une pièce adverse"""
