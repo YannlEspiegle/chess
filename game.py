@@ -4,6 +4,7 @@ import pygame as pg
 
 from board import Board
 from constants import BLACK, HEIGHT, TAILLE_CASE, WHITE, WIDTH, TRUE_BLACK, GREY
+from pieces import Cavalier, Dame, Tour, Fou
 from pictures import (
     TEXTE_EGALITE,
     TEXTE_VICTOIRE_BLANCS,
@@ -46,6 +47,16 @@ class Game:
                 # pat
                 self.winner = 0
             self.partie_finie = True
+
+    def change_promotion_piece(self, key):
+        key_piece = {
+            pg.K_d: Dame,
+            pg.K_t: Tour,
+            pg.K_c: Cavalier,
+            pg.K_f: Fou,
+        }
+        self.board.piece_promotion = key_piece[key]
+        print(f"Promotions en {key_piece[key].nom}")
 
     def tour_suivant(self):
         if self.trait == 1:

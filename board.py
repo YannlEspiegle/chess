@@ -4,7 +4,7 @@ import pygame as pg
 
 from constants import BLACK, CODE_PIECES, SPECIAL, TAILLE_CASE, WHITE
 from pictures import COUP_POSSIBLE, PIECES, PRISE_POSSIBLE
-from pieces import Roi, Tour
+from pieces import Pion, Roi, Tour, Dame
 
 
 class Board:
@@ -19,6 +19,7 @@ class Board:
             [1, 1, 1, 1, 1, 1, 1, 1],
             [4, 5, 6, 2, 3, 6, 5, 4],
         ]
+        self.piece_promotion = Dame
         self.piece_est_touchee = False
         self.piece_touchee = None
         self.update_pieces()
@@ -45,6 +46,8 @@ class Board:
 
             self.piece_touchee.deplacer(x, y)
             self.update_pieces()
+            if isinstance(self.piece_touchee, Pion):
+                self.check_promotion(self.piece_touchee)
             self.deselect()
 
     def coup_legal(self, piece, x, y):
@@ -79,6 +82,14 @@ class Board:
 
             return est_legal
         return False
+
+    def check_promotion(self, piece: Pion):
+        if piece.color == 1 and piece.y == 0:
+            self.plateau[piece.y][piece.x] = self.piece_promotion.code
+        elif piece.color == 2 and piece.y == 7:
+            self.plateau[piece.y][piece.x] = self.piece_promotion.code + 10
+
+        self.update_pieces()
 
     def case_attaquee(self, x, y, color):
         for attaquant in self.pieces:

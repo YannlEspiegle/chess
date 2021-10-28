@@ -27,6 +27,8 @@ def main():
                 return 0
             if event.type == pg.MOUSEBUTTONDOWN:
                 g.on_click(pg.mouse.get_pos())
+            if event.type == pg.KEYUP:
+                g.change_promotion_piece(event.key)
 
         clock.tick(60)
 

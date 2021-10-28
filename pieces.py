@@ -2,6 +2,9 @@
 
 
 class Piece:
+    code = 0
+    nom = "piece"
+
     def __init__(self, plateau, x, y, color):
         self.x = x
         self.y = y
@@ -10,6 +13,9 @@ class Piece:
 
     def clone(self):
         return self.__class__(self.plateau, self.x, self.y, self.color)
+
+    def __repr__(self):
+        return f"{self.nom}({self.x};{self.y})"
 
     def deplacer(self, x, y):
         """Déplace la pièce sans se soucier du fait que le coup soit légal ou non"""
@@ -56,6 +62,9 @@ class Piece:
 
 
 class Pion(Piece):
+    code = 1
+    nom = "pion"
+
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
 
@@ -87,6 +96,9 @@ class Pion(Piece):
 
 
 class Fou(Piece):
+    code = 6
+    nom = "fou"
+
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
 
@@ -108,6 +120,9 @@ class Fou(Piece):
 
 
 class Cavalier(Piece):
+    code = 5
+    nom = "cavalier"
+
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
 
@@ -128,6 +143,9 @@ class Cavalier(Piece):
 
 
 class Tour(Piece):
+    code = 4
+    nom = "tour"
+
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
 
@@ -149,6 +167,9 @@ class Tour(Piece):
 
 
 class Roi(Piece):
+    code = 2
+    nom = "roi"
+
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
 
@@ -166,7 +187,8 @@ class Roi(Piece):
         if (self.color == 1 and self.y == 7) or (self.color == 2 and self.y == 0):
             grand_roque = True
             petit_roque = True
-            for i in range(1, 4): # le grand roque est possible si les trois case de droite sont vide
+            for i in range(1, 4):
+                # le grand roque est possible si les trois case de droite sont vide
                 grand_roque = grand_roque and self.est_vide(*self.horizontale(0, l=i))
             for i in range(1, 3):
                 petit_roque = petit_roque and self.est_vide(*self.horizontale(1, l=i))
@@ -180,6 +202,9 @@ class Roi(Piece):
 
 
 class Dame(Piece):
+    code = 3
+    nom = "dame"
+
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
 
