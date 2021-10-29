@@ -10,14 +10,14 @@ from pieces import Pion, Roi, Tour, Dame
 class Board:
     def __init__(self):
         self.plateau = [
-            [14, 15, 16, 12, 13, 16, 15, 14],
+            [14, 15, 16, 13, 12, 16, 15, 14],
             [11, 11, 11, 11, 11, 11, 11, 11],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [1, 1, 1, 1, 1, 1, 1, 1],
-            [4, 5, 6, 2, 3, 6, 5, 4],
+            [4, 5, 6, 3, 2, 6, 5, 4],
         ]
         self.piece_promotion = Dame
         self.piece_est_touchee = False
