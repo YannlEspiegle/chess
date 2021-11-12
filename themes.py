@@ -19,11 +19,10 @@ def get_colors_from_files(colors_file):
     color_variables = {}
     with open(colors_file, "r", encoding="utf-8") as f:
         for ligne in f.readlines():
-            if ligne[0] == "#":
-                pass
-            nom, hex_color = ligne.rstrip().split(":")
-            nom = nom.upper().replace("-", "_")
-            color_variables[nom] = hex_to_rgb(hex_color)
+            if ligne[0] != "#" and ligne != "\n":
+                nom, hex_color = ligne.rstrip().split(":")
+                nom = nom.upper().replace("-", "_")
+                color_variables[nom] = hex_to_rgb(hex_color)
     return color_variables
 
 

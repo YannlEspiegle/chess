@@ -1,6 +1,0 @@
-black-case:#505050
-white-case:#E6E6E6
-selected-case:#C9C32C
-black-background:#1E1E1E
-white-background:#E6E6E6
-draw-background:#5A5A5A
