@@ -42,7 +42,7 @@ def get_theme(name):
         16: pg.image.load(f"themes/{name}/pieces/fou_noir.png"),
     }
 
-    color_variables = get_colors_from_files(f"themes/{name}/colors.txt")
+    color_variables = get_colors_from_files(f"themes/{name}/colors.conf")
     return pieces, color_variables
 
 
