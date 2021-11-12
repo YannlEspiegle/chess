@@ -2,9 +2,10 @@
 
 import pygame as pg
 
-from constants import BLACK, CODE_PIECES, SPECIAL, TAILLE_CASE, WHITE
-from pictures import COUP_POSSIBLE, PIECES, PRISE_POSSIBLE
-from pieces import Pion, Roi, Tour, Dame
+from constants import CODE_PIECES, TAILLE_CASE
+from pictures import COUP_POSSIBLE, PRISE_POSSIBLE
+from pieces import Dame, Pion, Roi, Tour
+from themes import BLACK_CASE, PIECES, SELECTED_CASE, WHITE_CASE
 
 
 class Board:
@@ -138,11 +139,11 @@ class Board:
         for y in range(8):
             for x in range(8):
                 if self.piece_touchee and (x, y) == (self.piece_touchee.x, self.piece_touchee.y):
-                    color = SPECIAL
+                    color = SELECTED_CASE
                 elif (x + y) % 2 == 0:
-                    color = WHITE
+                    color = WHITE_CASE
                 else:
-                    color = BLACK
+                    color = BLACK_CASE
 
                 case = (x * taille, y * taille, taille, taille)
                 pg.draw.rect(win, color, case)

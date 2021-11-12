@@ -3,8 +3,7 @@
 import pygame as pg
 
 from board import Board
-from constants import BLACK, HEIGHT, TAILLE_CASE, WHITE, WIDTH, TRUE_BLACK, GREY
-from pieces import Cavalier, Dame, Tour, Fou
+from constants import HEIGHT, TAILLE_CASE, WIDTH
 from pictures import (
     TEXTE_EGALITE,
     TEXTE_VICTOIRE_BLANCS,
@@ -12,6 +11,8 @@ from pictures import (
     TITRE_COULEUR_BLANC,
     TITRE_COULEUR_NOIR,
 )
+from pieces import Cavalier, Dame, Fou, Tour
+from themes import BLACK_BACKGROUND, DRAW_BACKGROUND, WHITE_BACKGROUND
 
 
 class Game:
@@ -48,6 +49,18 @@ class Game:
                 self.winner = 0
             self.partie_finie = True
 
+    def check_abandon_draw(self, key):
+        if pg.key.get_mods() & pg.KMOD_CTRL:
+            if key == pg.K_a:  # ABANDON
+                if self.trait == 1:
+                    self.winner = 2
+                else:
+                    self.winner = 1
+                self.partie_finie = True
+            elif key == pg.K_e:  # ÉGALITÉ
+                self.winner = 0
+                self.partie_finie = True
+
     def change_promotion_piece(self, key):
         key_piece = {
             pg.K_d: Dame,
@@ -55,8 +68,9 @@ class Game:
             pg.K_c: Cavalier,
             pg.K_f: Fou,
         }
-        self.board.piece_promotion = key_piece[key]
-        print(f"Promotions en {key_piece[key].nom}")
+        if key in key_piece:
+            self.board.piece_promotion = key_piece[key]
+            print(f"Promotions en {key_piece[key].nom}")
 
     def tour_suivant(self):
         if self.trait == 1:
@@ -79,19 +93,19 @@ class Game:
             # blancs gagnent -> fond blanc, écriture noire
             titre = TITRE_COULEUR_NOIR
             texte = TEXTE_VICTOIRE_BLANCS
-            win.fill(WHITE)
+            win.fill(WHITE_BACKGROUND)
 
         elif self.winner == 2:
             # noirs gagnent -> fond noir, écriture blanche
             titre = TITRE_COULEUR_BLANC
             texte = TEXTE_VICTOIRE_NOIRS
-            win.fill(TRUE_BLACK)
+            win.fill(BLACK_BACKGROUND)
 
         elif self.winner == 0:
             # égalité -> fond gris, écriture blanche
             titre = TITRE_COULEUR_BLANC
             texte = TEXTE_EGALITE
-            win.fill(GREY)
+            win.fill(DRAW_BACKGROUND)
 
         # on redimensionne le titre et le texte
         titre = pg.transform.scale(titre, (longueur_titre, hauteur_titre))

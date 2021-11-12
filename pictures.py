@@ -2,21 +2,6 @@
 
 import pygame as pg
 
-PIECES = {
-    1: pg.image.load("assets/pieces/pion_blanc.png"),
-    2: pg.image.load("assets/pieces/roi_blanc.png"),
-    3: pg.image.load("assets/pieces/dame_blanche.png"),
-    4: pg.image.load("assets/pieces/tour_blanche.png"),
-    5: pg.image.load("assets/pieces/cavalier_blanc.png"),
-    6: pg.image.load("assets/pieces/fou_blanc.png"),
-    11: pg.image.load("assets/pieces/pion_noir.png"),
-    12: pg.image.load("assets/pieces/roi_noir.png"),
-    13: pg.image.load("assets/pieces/dame_noire.png"),
-    14: pg.image.load("assets/pieces/tour_noire.png"),
-    15: pg.image.load("assets/pieces/cavalier_noir.png"),
-    16: pg.image.load("assets/pieces/fou_noir.png"),
-}
-
 COUP_POSSIBLE = pg.image.load("assets/icones/mouvement_possible.png")
 PRISE_POSSIBLE = pg.image.load("assets/icones/prise_possible.png")
 
