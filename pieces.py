@@ -189,14 +189,14 @@ class Roi(Piece):
             petit_roque = True
             for i in range(1, 4):
                 # le grand roque est possible si les trois case de droite sont vide
-                grand_roque = grand_roque and self.est_vide(*self.horizontale(0, l=i))
+                grand_roque = grand_roque and self.est_vide(*self.horizontale(1, l=i))
             for i in range(1, 3):
-                petit_roque = petit_roque and self.est_vide(*self.horizontale(1, l=i))
+                petit_roque = petit_roque and self.est_vide(*self.horizontale(0, l=i))
 
             if grand_roque:
-                res.append(self.horizontale(0, l=2))
-            if petit_roque:
                 res.append(self.horizontale(1, l=2))
+            if petit_roque:
+                res.append(self.horizontale(0, l=2))
 
         return res
 

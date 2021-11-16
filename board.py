@@ -43,7 +43,8 @@ class Board:
             if isinstance(self.piece_touchee, Roi) and abs(x - self.piece_touchee.x) == 2:
                 if x > self.piece_touchee.x:
                     self.check_roque(self.piece_touchee, 0, deplacer=True)
-                self.check_roque(self.piece_touchee, 1, deplacer=True)
+                else:
+                    self.check_roque(self.piece_touchee, 1, deplacer=True)
 
             self.piece_touchee.deplacer(x, y)
             self.update_pieces()
