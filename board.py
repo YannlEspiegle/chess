@@ -3,9 +3,8 @@
 import pygame as pg
 
 from constants import CODE_PIECES, TAILLE_CASE
-from pictures import COUP_POSSIBLE, PRISE_POSSIBLE
 from pieces import Dame, Pion, Roi, Tour
-from themes import BLACK_CASE, PIECES, SELECTED_CASE, WHITE_CASE
+from themes import BLACK_CASE, PIECES, SELECTED_CASE, WHITE_CASE, COUP_POSSIBLE, PRISE_POSSIBLE
 
 
 class Board:

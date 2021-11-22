@@ -42,11 +42,14 @@ def get_theme(name):
         16: pg.image.load(f"themes/{name}/pieces/fou_noir.png"),
     }
 
+    coup_possible = pg.image.load(f"themes/{name}/icones/mouvement_possible.png")
+    prise_possible = pg.image.load(f"themes/{name}/icones/prise_possible.png")
+
     color_variables = get_colors_from_files(f"themes/{name}/colors.conf")
-    return pieces, color_variables
+    return pieces, color_variables, coup_possible, prise_possible
 
 
-PIECES, color_variables = get_theme(THEME_NAME)
+PIECES, color_variables , COUP_POSSIBLE, PRISE_POSSIBLE = get_theme(THEME_NAME)
 
 BLACK_CASE = color_variables["BLACK_CASE"]
 WHITE_CASE = color_variables["WHITE_CASE"]

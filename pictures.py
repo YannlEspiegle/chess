@@ -2,9 +2,6 @@
 
 import pygame as pg
 
-COUP_POSSIBLE = pg.image.load("assets/icones/mouvement_possible.png")
-PRISE_POSSIBLE = pg.image.load("assets/icones/prise_possible.png")
-
 TITRE_COULEUR_BLANC = pg.image.load("assets/textes/titre.png")
 TITRE_COULEUR_NOIR = pg.image.load("assets/textes/titre_noir.png")
 
