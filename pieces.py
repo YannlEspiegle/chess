@@ -64,6 +64,7 @@ class Piece:
 class Pion(Piece):
     code = 1
     nom = "pion"
+    valeur = 1
 
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
@@ -98,6 +99,7 @@ class Pion(Piece):
 class Fou(Piece):
     code = 6
     nom = "fou"
+    valeur = 3
 
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
@@ -122,6 +124,7 @@ class Fou(Piece):
 class Cavalier(Piece):
     code = 5
     nom = "cavalier"
+    valeur = 3
 
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
@@ -145,6 +148,7 @@ class Cavalier(Piece):
 class Tour(Piece):
     code = 4
     nom = "tour"
+    valeur = 5
 
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
@@ -169,6 +173,7 @@ class Tour(Piece):
 class Roi(Piece):
     code = 2
     nom = "roi"
+    valeur = 100000000
 
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)
@@ -204,6 +209,7 @@ class Roi(Piece):
 class Dame(Piece):
     code = 3
     nom = "dame"
+    valeur = 9
 
     def __init__(self, plateau, x, y, color):
         super().__init__(plateau, x, y, color)

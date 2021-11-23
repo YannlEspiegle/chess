@@ -2,6 +2,7 @@
 
 import pygame as pg
 
+from ai import AI
 from board import Board
 from constants import HEIGHT, TAILLE_CASE, WIDTH
 from pictures import (
@@ -18,8 +19,12 @@ from themes import BLACK_BACKGROUND, DRAW_BACKGROUND, WHITE_BACKGROUND
 class Game:
     def __init__(self):
         self.board = Board()
-        self.partie_finie = False
+        self.ai = AI()
+
+        self.couleur_joueur = 1
         self.trait = 1
+
+        self.partie_finie = False
         self.winner = 0
 
     def on_click(self, pos):
@@ -77,6 +82,13 @@ class Game:
             self.trait = 2
         else:
             self.trait = 1
+
+        if self.trait != self.couleur_joueur:
+            depart, arrivee = self.ai.meilleur_coup(self.board, self.trait)
+            self.board.select(*depart)
+            self.board.deplacer_si_possible(*arrivee)
+
+            self.tour_suivant()
 
     def draw(self, win):
         if not self.partie_finie:
